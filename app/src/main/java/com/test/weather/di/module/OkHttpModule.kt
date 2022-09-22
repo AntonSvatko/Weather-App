@@ -38,20 +38,20 @@ object OkHttpModule {
     @Singleton
     @ApiOkHttpClient
     fun provideApiClient(
-        connectivityInterceptor: ConnectivityInterceptor,
+//        connectivityInterceptor: ConnectivityInterceptor,
         apiQueryInterceptor: ApiQueryInterceptor,
         httpLoggingInterceptor: HttpLoggingInterceptor
     ): OkHttpClient =
         OkHttpClient.Builder()
-            .addInterceptor(connectivityInterceptor)
+//            .addInterceptor(connectivityInterceptor)
             .addInterceptor(apiQueryInterceptor)
             .addInterceptor(httpLoggingInterceptor)
             .build()
 
-    @Provides
-    @Singleton
-    fun provideConnectivityInterceptor(@ApplicationContext context: Context): ConnectivityInterceptor =
-        ConnectivityInterceptor(context)
+//    @Provides
+//    @Singleton
+//    fun provideConnectivityInterceptor(@ApplicationContext context: Context): ConnectivityInterceptor =
+//        ConnectivityInterceptor(context)
 
     @Provides
     @Singleton

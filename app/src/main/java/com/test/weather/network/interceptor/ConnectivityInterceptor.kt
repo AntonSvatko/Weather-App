@@ -5,7 +5,7 @@ import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
 import android.os.Build
-import com.test.giphy.network.exception.NoConnectivityException
+import com.test.weather.network.exception.NoConnectivityException
 import okhttp3.Interceptor
 import okhttp3.Response
 

@@ -1,5 +1,6 @@
 package com.test.weather.ui.adapter
 
+import android.graphics.Bitmap
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -10,7 +11,8 @@ import com.test.weather.databinding.ItemCityBinding
 
 class CitiesAdapter(private val callBack: (City) -> Unit) :
     ListAdapter<City, CitiesAdapter.RecordViewHolder>(RecordsDiffUtilVoiceRec()) {
-
+    var oddPhoto: Bitmap? = null
+    var evenPhoto: Bitmap? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecordViewHolder {
         val binding =
@@ -28,10 +30,17 @@ class CitiesAdapter(private val callBack: (City) -> Unit) :
         fun bindVoiceRec(city: City) {
             binding.name = city.name
             binding.position = currentList.indexOf(city)
+
+            binding.image.setImageBitmap(
+                if ((adapterPosition + 1) % 2 == 0)
+                    evenPhoto
+                else
+                    oddPhoto
+            )
+
             itemView.setOnClickListener {
                 callBack(city)
             }
-
             binding.executePendingBindings()
         }
     }

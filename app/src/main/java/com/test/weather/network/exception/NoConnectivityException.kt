@@ -1,4 +1,4 @@
-package com.test.giphy.network.exception
+package com.test.weather.network.exception
 
 import java.io.IOException
 

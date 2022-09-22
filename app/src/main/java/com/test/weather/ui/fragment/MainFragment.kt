@@ -7,6 +7,9 @@ import com.test.weather.databinding.FragmentMainBinding
 import com.test.weather.ui.adapter.CitiesAdapter
 import com.test.weather.ui.base.fragment.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
 class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
@@ -19,6 +22,16 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.recyclerView.adapter = adapter
-        adapter.submitList(viewModel.cities)
+        viewModel.launchSafely {
+            viewModel.getEvenPhoto().collectLatest { even ->
+                viewModel.getOddPhoto().collectLatest { odd ->
+                    withContext(Dispatchers.Main) {
+                        adapter.evenPhoto = even
+                        adapter.oddPhoto = odd
+                        adapter.submitList(viewModel.cities)
+                    }
+                }
+            }
+        }
     }
 }
