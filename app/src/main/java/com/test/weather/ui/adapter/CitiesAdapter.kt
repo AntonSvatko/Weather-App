@@ -11,8 +11,14 @@ import com.test.weather.databinding.ItemCityBinding
 
 class CitiesAdapter(private val callBack: (City) -> Unit) :
     ListAdapter<City, CitiesAdapter.RecordViewHolder>(RecordsDiffUtilVoiceRec()) {
+
     var oddPhoto: Bitmap? = null
     var evenPhoto: Bitmap? = null
+    private val listCities by lazy { currentList }
+
+    init {
+        submitList(listOf())
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecordViewHolder {
         val binding =
@@ -29,10 +35,9 @@ class CitiesAdapter(private val callBack: (City) -> Unit) :
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bindVoiceRec(city: City) {
             binding.name = city.name
-            binding.position = currentList.indexOf(city)
 
             binding.image.setImageBitmap(
-                if ((adapterPosition + 1) % 2 == 0)
+                if ((listCities.indexOf(city) + 1) % 2 == 0)
                     evenPhoto
                 else
                     oddPhoto
@@ -51,7 +56,7 @@ class CitiesAdapter(private val callBack: (City) -> Unit) :
             oldItemVoiceRec: City,
             newItemVoiceRec: City
         ): Boolean {
-            return oldItemVoiceRec == newItemVoiceRec
+            return oldItemVoiceRec.id == newItemVoiceRec.id
         }
 
         override fun areContentsTheSame(
