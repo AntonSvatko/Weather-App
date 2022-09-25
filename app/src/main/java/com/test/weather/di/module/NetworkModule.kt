@@ -1,10 +1,10 @@
 package com.test.weather.di.module
 
-import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.test.weather.di.qualifier.ApiOkHttpClient
 import com.test.weather.network.api.GifService
+import com.test.weather.network.api.WeatherService
 import com.test.weather.network.const.ApiConstants
 import dagger.Module
 import dagger.Provides
@@ -21,11 +21,8 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideApiService(retrofit: Retrofit): GifService {
-        Log.d(
-            "retrofit1", retrofit.baseUrl().query.toString()
-        )
-        return retrofit.create(GifService::class.java)
+    fun provideApiService(retrofit: Retrofit): WeatherService {
+        return retrofit.create(WeatherService::class.java)
     }
 
     @Provides
@@ -34,14 +31,10 @@ object NetworkModule {
         @ApiOkHttpClient okHttpClient: OkHttpClient,
         converterFactory: GsonConverterFactory
     ): Retrofit {
-
-        val retrofit = Retrofit.Builder().baseUrl(ApiConstants.BASE_PHOTO_LINK).client(okHttpClient)
+        return Retrofit.Builder().baseUrl(ApiConstants.BASE_API_LINK).client(okHttpClient)
             .addConverterFactory(converterFactory).build()
-        Log.d(
-            "retrofit1", retrofit.baseUrl().query.toString()
-        )
-        return retrofit
     }
+
 
     @Provides
     @Singleton
@@ -51,6 +44,4 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideGson(): Gson = GsonBuilder().setLenient().create()
-
-
 }
