@@ -15,6 +15,7 @@ import javax.inject.Inject
 class WeatherRepository @Inject constructor(
     private val weatherService: WeatherService
 ) : BaseApiResponse() {
+
     suspend fun getWeather(lon: Double, lat: Double) = flow {
         emit(safeApiCall { weatherService.fetchWeather(lon, lat) })
     }.flowOn(Dispatchers.IO)
