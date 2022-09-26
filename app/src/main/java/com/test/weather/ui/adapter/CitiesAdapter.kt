@@ -11,6 +11,11 @@ import com.test.weather.databinding.ItemCityBinding
 class CitiesAdapter(private val listCities: List<City>, private val callBack: (City) -> Unit) :
     ListAdapter<City, CitiesAdapter.RecordViewHolder>(RecordsDiffUtilVoiceRec()) {
 
+    fun submitList(listCities: List<City>, subListFrom: Int, subListTo: Int) {
+        super.submitList(kotlin.runCatching { listCities.subList(subListFrom, subListTo) }
+            .getOrDefault(listCities))
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecordViewHolder {
         val binding =
             ItemCityBinding.inflate(LayoutInflater.from(parent.context), parent, false)
