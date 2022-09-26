@@ -8,28 +8,39 @@ import androidx.recyclerview.widget.RecyclerView
 import com.test.weather.data.entity.City
 import com.test.weather.databinding.ItemCityBinding
 
-class CitiesPagingDataAdapter(private val callBack: (City) -> Unit) : PagingDataAdapter<City, CitiesPagingDataAdapter.CitiesViewHolder>(CitiesEntityDiff()) {
+class CitiesPagingDataAdapter(private val callBack: (City) -> Unit) :
+    PagingDataAdapter<City, CitiesPagingDataAdapter.CitiesViewHolder>(CitiesEntityDiff()) {
 
     override fun onBindViewHolder(holder: CitiesViewHolder, position: Int) {
-        getItem(position)?.let { userPostEntity -> holder.bind(userPostEntity) }
+        getItem(position)?.let { city -> holder.bind(city) }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CitiesViewHolder {
-        return CitiesViewHolder(ItemCityBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+        return CitiesViewHolder(
+            ItemCityBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
     }
 
-    inner class CitiesViewHolder(private val binding: ItemCityBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class CitiesViewHolder(private val binding: ItemCityBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(city: City) {
             binding.position = city.primaryKey
             binding.name = city.name
-            itemView.setOnClickListener{
+            itemView.setOnClickListener {
                 callBack(city)
             }
         }
     }
-  
-  class CitiesEntityDiff : DiffUtil.ItemCallback<City>() {
-    override fun areItemsTheSame(oldItem: City, newItem: City): Boolean = oldItem.id == newItem.id
-    override fun areContentsTheSame(oldItem: City, newItem: City): Boolean = oldItem.name == newItem.name
-  }
+
+    class CitiesEntityDiff : DiffUtil.ItemCallback<City>() {
+        override fun areItemsTheSame(oldItem: City, newItem: City): Boolean =
+            oldItem.id == newItem.id
+
+        override fun areContentsTheSame(oldItem: City, newItem: City): Boolean =
+            oldItem.name == newItem.name
+    }
 }

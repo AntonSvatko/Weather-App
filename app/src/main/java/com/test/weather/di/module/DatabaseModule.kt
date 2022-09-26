@@ -26,7 +26,7 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object DatabaseModule {
     const val FILE_NAME = "city_list.json"
-    
+
     @Provides
     @Singleton
     fun provideAppDatabase(
@@ -62,12 +62,10 @@ object DatabaseModule {
             climbingRouteDao.insert(city)
         }
 
-        private fun readJSONFromAssets(): String =
+        private fun readJSONFromAssets() =
             context.assets
                 ?.open(FILE_NAME)
-                ?.readBytes()
-                ?.let(::String)
-                .orEmpty()
+                ?.reader()
     }
 
     @Provides
