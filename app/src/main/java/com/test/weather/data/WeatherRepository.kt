@@ -23,6 +23,4 @@ class WeatherRepository @Inject constructor(
 
     fun getSearchedCities(text: String) =
         dao.getSearchedCities(text)
-
-
 }

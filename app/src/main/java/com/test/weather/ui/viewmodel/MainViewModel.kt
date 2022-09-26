@@ -19,14 +19,15 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     repository: WeatherRepository,
 ) : CoroutineViewModel() {
-    val citiesList: Flow<List<City>> = repository.getCities()
     val searchedCitiesFlow = MutableStateFlow<List<City>>(listOf())
+    var list = listOf<City>()
+    var i = 1
 
     private var lastSearch = ""
 
     init {
         launchSafely {
-            citiesList.collect {
+            repository.getCities().collect {
                 searchedCitiesFlow.emit(it)
             }
         }
@@ -50,7 +51,9 @@ class MainViewModel @Inject constructor(
     val getCities = debounce<String>(scope = viewModelScope) { newText ->
         launchSafely {
             if (lastSearch != newText) {
-                searchedCitiesFlow.emitAll(repository.getSearchedCities(newText))
+                repository.getSearchedCities(newText).collect{
+                    searchedCitiesFlow.emit(it)
+                }
             }
         }
         lastSearch = newText

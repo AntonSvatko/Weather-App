@@ -2,7 +2,6 @@ package com.test.weather.di.module
 
 import android.content.Context
 import com.test.weather.network.interceptor.ApiQueryInterceptor
-import com.test.weather.network.interceptor.ConnectivityInterceptor
 import com.test.weather.di.qualifier.ApiOkHttpClient
 import dagger.Module
 import dagger.Provides
@@ -19,12 +18,6 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object OkHttpModule {
 
-//    @Provides
-//    @Singleton
-//    @PicassoOkHttpClient
-//    fun providePicassoClient(cache: Cache): OkHttpClient =
-//        OkHttpClient.Builder().cache(cache).build()
-
     @Provides
     @Singleton
     fun provideCache(file: File): Cache = Cache(file, 50 * 1024 * 1024)
@@ -38,20 +31,13 @@ object OkHttpModule {
     @Singleton
     @ApiOkHttpClient
     fun provideApiClient(
-//        connectivityInterceptor: ConnectivityInterceptor,
         apiQueryInterceptor: ApiQueryInterceptor,
         httpLoggingInterceptor: HttpLoggingInterceptor
     ): OkHttpClient =
         OkHttpClient.Builder()
-//            .addInterceptor(connectivityInterceptor)
             .addInterceptor(apiQueryInterceptor)
             .addInterceptor(httpLoggingInterceptor)
             .build()
-
-//    @Provides
-//    @Singleton
-//    fun provideConnectivityInterceptor(@ApplicationContext context: Context): ConnectivityInterceptor =
-//        ConnectivityInterceptor(context)
 
     @Provides
     @Singleton
@@ -62,7 +48,6 @@ object OkHttpModule {
     @Singleton
     fun provideLoggingInterceptor(): HttpLoggingInterceptor {
         val httpLoggingInterceptor = HttpLoggingInterceptor()
-
         httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.NONE
 
         return httpLoggingInterceptor

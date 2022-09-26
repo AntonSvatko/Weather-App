@@ -29,7 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:visibility="@{response instanceof NetworkResult.Loading? View.VISIBLE : View.GONE, default = visible}" />
+            android:visibility="@{response instanceof NetworkResult.Success || response instanceof NetworkResult.Error? View.GONE : View.VISIBLE, default = visible}" />
 
         <com.google.android.material.textview.MaterialTextView
             android:layout_width="wrap_content"

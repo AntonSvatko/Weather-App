@@ -3,7 +3,6 @@ package com.test.weather.di.module
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.test.weather.di.qualifier.ApiOkHttpClient
-import com.test.weather.network.api.GifService
 import com.test.weather.network.api.WeatherService
 import com.test.weather.network.const.ApiConstants
 import dagger.Module

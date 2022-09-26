@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.test.weather.data.entity.City
 import com.test.weather.databinding.ItemCityBinding
 
-class CitiesAdapter(private val listCities: List<City>, private val callBack: (City) -> Unit) :
+class CitiesAdapter(private val callBack: (City) -> Unit) :
     ListAdapter<City, CitiesAdapter.RecordViewHolder>(RecordsDiffUtilVoiceRec()) {
 
     fun submitList(listCities: List<City>, subListFrom: Int, subListTo: Int) {
@@ -31,7 +31,7 @@ class CitiesAdapter(private val listCities: List<City>, private val callBack: (C
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bindVoiceRec(city: City) {
             binding.name = city.name
-            binding.position = listCities.indexOf(city) + 1
+            binding.position = city.primaryKey
 
             itemView.setOnClickListener {
                 callBack(city)
@@ -53,7 +53,7 @@ class CitiesAdapter(private val listCities: List<City>, private val callBack: (C
             oldIteVoiceRec: City,
             newItemVoiceRec: City
         ): Boolean {
-            return oldIteVoiceRec == newItemVoiceRec
+            return oldIteVoiceRec.name == newItemVoiceRec.name
         }
     }
 }

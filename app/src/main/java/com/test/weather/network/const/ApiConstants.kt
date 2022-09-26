@@ -1,9 +1,10 @@
 package com.test.weather.network.const
 
+import com.test.weather.BuildConfig
+
 object ApiConstants {
-    const val BASE_PHOTO_LINK = "https://infotech.gov.ua/storage/img/"
     const val BASE_API_LINK = "https://api.openweathermap.org/"
 
-    const val API_KEY = "51e4f66a92ff0448851ce7d70a02c783"
+    const val API_KEY = BuildConfig.WEATHER_API_KEY
     const val UNITS_SYSTEM = "metric"
 }

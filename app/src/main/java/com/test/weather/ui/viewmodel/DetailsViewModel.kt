@@ -20,7 +20,7 @@ class DetailsViewModel @Inject constructor(
     private val _weather = MutableLiveData<NetworkResult<Weather>>()
     val weatherResponse: LiveData<NetworkResult<Weather>> = _weather
 
-    fun getWeather(coord: Coord) = viewModelScope.launch(Dispatchers.Main) {
+    fun getWeather(coord: Coord) = viewModelScope.launch {
         repository.getWeather(coord.lon, coord.lat).collect {
             _weather.value = it
         }

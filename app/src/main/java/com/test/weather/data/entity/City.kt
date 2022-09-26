@@ -9,7 +9,8 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 @Entity(tableName = "city_table")
 data class City(
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
+    val primaryKey: Int = 0,
     val id: Int = 0,
     val name: String,
     val state: String = "",
