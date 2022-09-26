@@ -2,14 +2,12 @@ package com.test.weather.ui.fragment
 
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.test.weather.R
-import com.test.weather.data.entity.City
 import com.test.weather.databinding.FragmentMainBinding
 import com.test.weather.ui.adapter.CitiesAdapter
 import com.test.weather.ui.base.fragment.BaseFragment
@@ -33,8 +31,17 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
         binding.recyclerView.pagination()
 
         binding.searchView.setOnQueryTextListener(CustomQueryTextListener { newText ->
-            viewModel.getCities(newText)
+            viewModel.lastSearch.value = newText
+            viewModel.loadCities()
+//            viewModel.getCities(newText)
         })
+        viewModel.loadCities()
+
+        lifecycleScope.launch {
+            viewModel.citiesList.collect {
+                binding.progressBar.visibility = View.GONE
+            }
+        }
 
         lifecycleScope.launch {
             viewModel.searchedCitiesFlow.collect { list ->
