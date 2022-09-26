@@ -8,12 +8,12 @@ plugins {
 }
 
 android {
-    compileSdk 32
+    compileSdk 33
 
     defaultConfig {
         applicationId "com.test.weather"
         minSdk 21
-        targetSdk 32
+        targetSdk 33
         versionCode 1
         versionName "1.0"
 
@@ -84,5 +84,8 @@ dependencies {
     implementation "androidx.room:room-ktx:2.4.3"
     implementation "androidx.room:room-paging:2.4.3"
     kapt "androidx.room:room-compiler:2.4.3"
+
+    //paging
+    implementation "androidx.paging:paging-runtime-ktx:3.2.0-alpha02"
 
 }

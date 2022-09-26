@@ -1,5 +1,6 @@
 package com.test.weather.data.database.dao
 
+import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
@@ -11,9 +12,9 @@ interface CityDao {
     @Insert
     suspend fun insert(list: List<City>)
 
-    @Query("SELECT * FROM city_table")
-    fun getCities(): Flow<List<City>>
+    @Query("SELECT * FROM city_table ")
+    fun getCities(): PagingSource<Int, City>
 
     @Query("SELECT * FROM city_table WHERE name LIKE '%' || :text  || '%'")
-    fun getSearchedCities(text: String): Flow<List<City>>
+    fun getSearchedCities(text: String): PagingSource<Int, City>
 }

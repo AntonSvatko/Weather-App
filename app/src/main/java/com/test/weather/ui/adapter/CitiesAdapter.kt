@@ -9,24 +9,19 @@ import com.test.weather.data.entity.City
 import com.test.weather.databinding.ItemCityBinding
 
 class CitiesAdapter(private val callBack: (City) -> Unit) :
-    ListAdapter<City, CitiesAdapter.RecordViewHolder>(RecordsDiffUtilVoiceRec()) {
+    ListAdapter<City, CitiesAdapter.WeatherViewHolder>(WeatherDiffUtilVoiceRec()) {
 
-    fun submitList(listCities: List<City>, subListFrom: Int, subListTo: Int) {
-        super.submitList(kotlin.runCatching { listCities.subList(subListFrom, subListTo) }
-            .getOrDefault(listCities))
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecordViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WeatherViewHolder {
         val binding =
             ItemCityBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return RecordViewHolder(binding)
+        return WeatherViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: RecordViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: WeatherViewHolder, position: Int) {
         holder.bindVoiceRec(getItem(position))
     }
 
-    inner class RecordViewHolder(
+    inner class WeatherViewHolder(
         private val binding: ItemCityBinding
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bindVoiceRec(city: City) {
@@ -41,7 +36,7 @@ class CitiesAdapter(private val callBack: (City) -> Unit) :
     }
 
 
-    class RecordsDiffUtilVoiceRec : DiffUtil.ItemCallback<City>() {
+    class WeatherDiffUtilVoiceRec : DiffUtil.ItemCallback<City>() {
         override fun areItemsTheSame(
             oldItemVoiceRec: City,
             newItemVoiceRec: City
