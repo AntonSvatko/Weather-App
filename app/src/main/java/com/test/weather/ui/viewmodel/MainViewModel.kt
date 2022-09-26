@@ -5,20 +5,23 @@ import com.test.weather.data.WeatherRepository
 import com.test.weather.data.entity.City
 import com.test.weather.ui.base.viewmodel.CoroutineViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val repository: WeatherRepository,
+    repository: WeatherRepository,
 ) : CoroutineViewModel() {
     val searchedCitiesFlow = MutableStateFlow<List<City>>(listOf())
     val citiesList = repository.getCities()
     var list = listOf<City>()
     var i = 1
 
-    var lastSearch = MutableStateFlow("")
+    private var lastSearch = ""
 
     init {
         launchSafely {
@@ -28,16 +31,29 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    private fun <T> debounce(
+        waitMs: Long = 500L,
+        scope: CoroutineScope,
+        destinationFunction: (T) -> Unit
+    ): (T) -> Unit {
+        var debounceJob: Job? = null
+        return { param: T ->
+            debounceJob?.cancel()
+            debounceJob = scope.launch {
+                delay(waitMs)
+                destinationFunction(param)
+            }
+        }
+    }
 
-    fun loadCities(){
-        lastSearch.map { it.trim() }
-            .filter { it.isNotBlank() }
-            .debounce(300L)
-            .distinctUntilChanged()
-            .flatMapLatest { repository.getSearchedCities(it) }
-            .onEach { searchedCitiesFlow.emit(it) }
-            .flowOn(Dispatchers.Default)
-            .launchIn(viewModelScope)
-
+    val getCities = debounce<String>(scope = viewModelScope) { newText ->
+        launchSafely {
+            if (lastSearch != newText) {
+                repository.getSearchedCities(newText).collect{
+                    searchedCitiesFlow.emit(it)
+                }
+            }
+        }
+        lastSearch = newText
     }
 }

@@ -31,11 +31,8 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
         binding.recyclerView.pagination()
 
         binding.searchView.setOnQueryTextListener(CustomQueryTextListener { newText ->
-            viewModel.lastSearch.value = newText
-            viewModel.loadCities()
-//            viewModel.getCities(newText)
+            viewModel.getCities(newText)
         })
-        viewModel.loadCities()
 
         lifecycleScope.launch {
             viewModel.citiesList.collect {
